@@ -86,7 +86,7 @@ function result(label) {
 (async () => {
     // try fetching undefined0.dev with a short timeout
     try {
-        await timeout(fetch("https://undefined0.dev/"), 5000)
+        await timeout(fetch("https://undefined0.dev/files/server-status"), 5000)
     } catch(_) {
         result(UpType.No)
         return;
