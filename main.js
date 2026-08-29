@@ -93,7 +93,13 @@ function result(label) {
     }
 
     // try testing the isp (this might take a while)
+    let pleaseWaitTimeout = setTimeout(() => {
+        document.querySelector("span#loading").innerHTML = "Loading... (server is up! checking network, this might take a while)";
+    }, 1000);
+
     let res = await fetch("https://isp-test.undefined0.dev/status");
+    clearTimeout(pleaseWaitTimeout);
+
     let json = await res.json();
 
     if ("error" in json) {
@@ -109,7 +115,6 @@ function result(label) {
     result(UpType.YesWithACatch);
 
     for (let [i, issue] of Object.entries(json["outages"])) {
-        console.log(issue);
         document.querySelector("main").appendChild($`div.issue`(
             $`span.number`(`#${parseInt(i) + 1}`),
 
