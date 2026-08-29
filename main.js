@@ -92,9 +92,14 @@ function result(label) {
         return;
     }
 
-    // try testing the isp
+    // try testing the isp (this might take a while)
     let res = await fetch("https://isp-test.undefined0.dev/status");
     let json = await res.json();
+
+    if ("error" in json) {
+        result(new SingleUpType("???", "red", `There was an error fetching the results: ${json["error"]}!`));
+        return;
+    }
 
     if (json["outages"].length == 0) {
         result(UpType.Yes);
