@@ -4,10 +4,39 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
+@keyframes scale-up {
+    from {
+        scale: 1;
+        opacity: .2;
+        transform: rotate(0turn);
+    }
+
+    to {
+        scale: 4;
+        opacity: .7;
+        transform: rotate(.5turn);
+    }
+}
+
+@keyframes rotate {
+    from { rotate: 0turn; }
+    to { rotate: 1turn; }
+}
+
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    place-content: center;
+    overflow: hidden;
+
+    > * {
+        grid-area: 1 / 1;
+        place-self: center;
+    }
+
     background-color: #f0f0f0;
 
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -17,7 +46,7 @@ body {
 
         padding: 20px;
         margin: 40px;
-        border-radius: 20px;
+        border-radius: 40px;
 
         display: flex;
         align-items: center;
@@ -26,12 +55,16 @@ body {
 
         max-width: 100%;
 
+        box-shadow: 0px 0px 10px -5px #00000031;
+
         > h1 {
             font-family: "Nunito", sans-serif;
             font-size: 80px;
 
             > img {
-                max-height: 1.5em;
+                height: 1.5em;
+                max-width: 60%;
+                object-fit: scale-down;
                 vertical-align: middle;
             }
         }
@@ -65,7 +98,7 @@ body {
             align-items: center;
             gap: 10px;
 
-            height: 100px;
+            min-height: 100px;
             width: 100%;
             max-width: 700px;
 
@@ -101,7 +134,7 @@ body {
 
             > .splitter {
                 width: 1px;
-                height: 50%;
+                height: 50px;
                 background-color: #aaaaaa;
             }
 

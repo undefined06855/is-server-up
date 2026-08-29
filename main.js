@@ -81,6 +81,29 @@ function result(label) {
 
     document.querySelector("span#subtitle").innerHTML = label.subtitle;
     document.querySelector("span#loading").style.display = "none";
+
+    document.body.appendChild(
+        $`span.glow`()
+        .$({
+            style: `
+                z-index: -1;
+
+                width: 392px;
+                height: 392px;
+
+                background-color: ${label.col};
+
+                animation:
+                    scale-up 2s ease-out 0s 1 normal both,
+                    rotate 60s linear 0s infinite normal both;
+
+                    mask:
+                        url("glow.png") center / auto no-repeat,
+                        radial-gradient(circle, black 0%, transparent 50%) center / auto no-repeat;
+                    mask-composite: intersect;
+            `
+        })
+    );
 }
 
 (async () => {
@@ -126,7 +149,7 @@ function result(label) {
             $`span.splitter`(),
             $`span.description`(`"${issue["customerDescription"]}"`),
 
-            $`span.fixed-at`(`Will be fixed on ${new Date(issue["estimatedFixTime"]).toLocaleDateString()}.`)
+            $`span.fixed-at`(`Aimed to be fixed ${new Date(issue["estimatedFixTime"]).toLocaleDateString()}.`)
         ));
     }
 })();
