@@ -97,10 +97,10 @@ function result(label) {
                     scale-up 2s ease-out 0s 1 normal both,
                     rotate 60s linear 0s infinite normal both;
 
-                    mask:
-                        url("glow.png") center / auto no-repeat,
-                        radial-gradient(circle, black 0%, transparent 50%) center / auto no-repeat;
-                    mask-composite: intersect;
+                mask:
+                    url("glow.png") center / auto no-repeat,
+                    radial-gradient(circle, black 0%, transparent 50%) center / auto no-repeat;
+                mask-composite: intersect;
             `
         })
     );
