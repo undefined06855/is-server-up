@@ -1,5 +1,5 @@
 * {
-    margin: 0;
+margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
@@ -12,14 +12,17 @@ html, body {
     from {
         scale: 1;
         opacity: .2;
-        transform: rotate(0turn);
     }
 
     to {
-        scale: 4;
+        scale: 3.5;
         opacity: .7;
-        transform: rotate(.5turn);
     }
+}
+
+@keyframes rotate-up {
+    from { transform: rotate(0turn); }
+    to { transform: rotate(0.8turn); }
 }
 
 @keyframes rotate {
@@ -61,6 +64,8 @@ body {
             font-family: "Nunito", sans-serif;
             font-size: 80px;
 
+            margin: 20px 30px;
+
             > img {
                 height: 1.5em;
                 max-width: 60%;
@@ -72,6 +77,8 @@ body {
         > #result {
             font-family: "Ultra", sans-serif;
             font-size: 120px;
+
+            margin-top: -30px;
             margin-bottom: -20px;
 
             > small {
@@ -82,6 +89,7 @@ body {
 
         > #subtitle {
             font-weight: 500;
+            text-align: center;
         }
 
         > .issue {
@@ -131,7 +139,6 @@ body {
                 }
             }
 
-
             > .splitter {
                 width: 1px;
                 height: 50px;
@@ -146,4 +153,3 @@ body {
         }
     }
 }
-

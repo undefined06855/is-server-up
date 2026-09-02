@@ -94,12 +94,13 @@ function result(label) {
                 background-color: ${label.col};
 
                 animation:
-                    scale-up 2s ease-out 0s 1 normal both,
-                    rotate 60s linear 0s infinite normal both;
+                    scale-up 2s cubic-bezier(0, 0, 0, 1) 0s 1 normal both,
+                    rotate-up 2.5s cubic-bezier(0, 0, 0, 1) 0s 1 normal both,
+                    rotate 70s linear 0s infinite normal both;
 
                 mask:
                     url("glow.png") center / auto no-repeat,
-                    radial-gradient(circle, black 0%, transparent 50%) center / auto no-repeat;
+                    radial-gradient(circle, black 0%, transparent 70%) center / auto no-repeat;
                 mask-composite: intersect;
             `
         })
@@ -120,7 +121,14 @@ function result(label) {
         document.querySelector("span#loading").innerHTML = "Loading... (server is up! checking network, this might take a while)";
     }, 1000);
 
-    let res = await fetch("https://isp-test.undefined0.dev/status");
+    let res;
+
+    try {
+        res = await fetch("https://isp-test.undefined0.dev/status");
+    } catch(_) {
+        result(new SingleUpType("???", "red", `Loading ISP info timed out, reload the page and it should be fine.<br/>Fetching ISP downtime info can take up to <strong>30s</strong> at times!`));
+    }
+
     clearTimeout(pleaseWaitTimeout);
 
     let json = await res.json();
