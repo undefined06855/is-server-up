@@ -107,7 +107,7 @@ function result(label) {
     );
 }
 
-(async () => {
+window.addEventListener("load", async () => {
     // try fetching undefined0.dev with a short timeout
     try {
         await timeout(fetch("https://isp-test.undefined0.dev/"), 5000)
@@ -160,4 +160,4 @@ function result(label) {
             $`span.fixed-at`(`Aimed to be fixed ${new Date(issue["estimatedFixTime"]).toLocaleDateString()}.`)
         ));
     }
-})();
+});
