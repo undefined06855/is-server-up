@@ -6,6 +6,14 @@ class SingleUpType {
     }
 }
 
+const urls = {
+    "https://undefined06855.github.io/is-server-up/": "https://isp-test.undefined0.dev/",
+    "https://is-github-up.undefined0.dev/": "https://undefined06855.github.io/is-server-up/",
+};
+
+/** @type {string} */
+let url = urls[window.location.href] ?? urls["https://is-github-up.undefined0.dev/"];
+
 const UpType = {
     Yes: new SingleUpType("Yes!", "green", "Everything is up, hopefully."),
     YesWithACatch: new SingleUpType("Yes<small>*</small>", "#0cdb00", "(But there are network issues)"),
@@ -107,12 +115,22 @@ function result(label) {
     );
 }
 
+if (url.includes("github")) {
+    document.querySelector("#wordart").src = "wordart-2.png";
+    document.head.querySelector("title").innerText = "Is Is undefined0.dev up? up?";
+}
+
 window.addEventListener("load", async () => {
     // try fetching undefined0.dev with a short timeout
     try {
-        await timeout(fetch("https://isp-test.undefined0.dev/"), 5000)
+        await timeout(fetch(url), 5000)
     } catch(_) {
         result(UpType.No)
+        return;
+    }
+
+    if (url.includes("github")) {
+        result(UpType.Yes);
         return;
     }
 
@@ -124,7 +142,7 @@ window.addEventListener("load", async () => {
     let res;
 
     try {
-        res = await fetch("https://isp-test.undefined0.dev/status");
+        res = await fetch(`${url}status`);
     } catch(_) {
         result(new SingleUpType("???", "red", `Loading ISP info timed out, reload the page and it should be fine.<br/>Fetching ISP downtime info can take up to <strong>30s</strong> at times!`));
     }
