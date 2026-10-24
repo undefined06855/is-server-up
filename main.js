@@ -72,15 +72,17 @@ function formatOutageType(outageType) {
 
 /**
  * @param {SingleUpType} label
+ * @param {any} [otherInfo={}]
  */
-function result(label) {
+function result(label, otherInfo = {}) {
     /** @type {HTMLSpanElement} */
     const span = document.querySelector("span#result");
     span.innerHTML = label.name;
     span.style.color = label.col;
 
     document.querySelector("span#subtitle").innerHTML = label.subtitle;
-    document.querySelector("span#loading").style.display = "none";
+    // document.querySelector("span#loading").style.display = "none";
+    document.querySelector("span#loading").innerText = `Server uptime: ${otherInfo.uptime ?? "unknown"}.`;
 
     document.body.appendChild(
         $`span.glow`()
@@ -109,24 +111,27 @@ function result(label) {
 
 window.addEventListener("load", async () => {
     // try fetching undefined0.dev with a short timeout
+    let res;
     try {
-        await timeout(fetch("https://isp-test.undefined0.dev/"), 5000)
+        res = await timeout(fetch("https://isp-test.undefined0.dev/other"), 5000)
     } catch(_) {
         result(UpType.No)
         return;
     }
+
+    let otherInfo = await res.json();
 
     // try testing the isp (this might take a while)
     let pleaseWaitTimeout = setTimeout(() => {
         document.querySelector("span#loading").innerHTML = "Loading... (server is up! checking network, this might take a while)";
     }, 1000);
 
-    let res;
-
     try {
         res = await fetch("https://isp-test.undefined0.dev/status");
     } catch(_) {
-        result(new SingleUpType("???", "red", `Loading ISP info timed out, reload the page and it should be fine.<br/>Fetching ISP downtime info can take up to <strong>30s</strong> at times!`));
+        result(new SingleUpType("???", "red", `Loading ISP info timed out, reload the page and it should be fine.<br/>Fetching ISP downtime info can take up to <strong>30s</strong> at times!`), otherInfo);
+        clearTimeout(pleaseWaitTimeout);
+        return;
     }
 
     clearTimeout(pleaseWaitTimeout);
@@ -134,16 +139,16 @@ window.addEventListener("load", async () => {
     let json = await res.json();
 
     if ("error" in json) {
-        result(new SingleUpType("???", "red", `There was an error fetching the results: ${json["error"]}!`));
+        result(new SingleUpType("???", "red", `There was an error fetching the results: ${json["error"]}!`), otherInfo);
         return;
     }
 
     if (json["outages"].length == 0) {
-        result(UpType.Yes);
+        result(UpType.Yes, otherInfo);
         return;
     }
 
-    result(UpType.YesWithACatch);
+    result(UpType.YesWithACatch, otherInfo);
 
     for (let [i, issue] of Object.entries(json["outages"])) {
         document.querySelector("main").appendChild($`div.issue`(
